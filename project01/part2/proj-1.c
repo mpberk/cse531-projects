@@ -8,7 +8,6 @@ int *x;
 semaphore_t child_done;
 semaphore_t parent_done;
 
-
 int child (void *arg)
 {
   int index = *(int*) arg;
@@ -33,7 +32,7 @@ int main(int argc, char *argv[])
     {
       count = atoi(argv[1]);
     }
-  
+
   // Setup array for incrementing and indices
   int *indices;
   x = calloc(count, sizeof(int));
@@ -60,26 +59,24 @@ int main(int argc, char *argv[])
   while (1)
     {
       j = j + 1;
-      
+
       // Wait for all children
       for (i = 0; i < count; i++)
         P(&child_done);
-      
+
       // print out array
       for (i = 0; i < count; i++)
         {
           printf("i: %d, x[%d] = %d\n", j, i, *(x+i));
           if (j != *(x+i))
-            {
-              failure = 1;             
-            }
+            failure = 1;
           if ((i == count - 1) && failure)
             break;
         }
-      
+
       if (failure)
         break;
-          
+
       // Signal to children that parent is done
       for (i = 0; i < count; i++)
         V(&parent_done);
