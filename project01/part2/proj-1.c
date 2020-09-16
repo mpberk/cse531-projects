@@ -24,7 +24,6 @@ int child (void *arg)
 int main(int argc, char *argv[])
 {
   int i;
-  int j;
 
   // Get number of children from command line
   int count = 3;
@@ -48,18 +47,33 @@ int main(int argc, char *argv[])
 
   for (i = 0; i < count; i++)
     pids[i] = start_thread(child, (void*) i);
-  
+
+  int failure = 0;
+  int j = 0;
   // Loop to wait for children then print
-  for (j = 0; j < 10000000; j++)
+  while (1)
     {
+      j = j + 1;
+      
       // Wait for all children
       for (i = 0; i < count; i++)
         P(&child_done);
-
+      
       // print out array
       for (i = 0; i < count; i++)
-        printf("i: %d, x[%d] = %d\n", j, i, *(x+i));
-
+        {
+          printf("i: %d, x[%d] = %d\n", j, i, *(x+i));
+          if (j != *(x+i))
+            {
+              failure = 1;             
+            }
+          if ((i == count - 1) && failure)
+            break;
+        }
+      
+      if (failure)
+        break;
+          
       // Signal to children that parent is done
       for (i = 0; i < count; i++)
         V(&parent_done);
