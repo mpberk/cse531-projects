@@ -37,11 +37,10 @@ int main(int argc, char *argv[])
   // Setup array for incrementing and indices
   int *indices;
   x = calloc(count, sizeof(int));
-  indices = calloc(count, sizeof(int));
+  indices = (int*) malloc(count * sizeof(int));
   for (i = 0; i < count; i++)
     {
-    *(x+i) = 0;
-    *(indices+i) = i;
+      *(indices+i) = i;
     }
 
   // Initialize semaphores
@@ -50,7 +49,7 @@ int main(int argc, char *argv[])
 
   // Setup and start pthreads
   pthread_t *pids;
-  pids = calloc(count, sizeof(pthread_t));
+  pids = (pthread_t*) malloc(count * sizeof(pthread_t));
 
   for (i = 0; i < count; i++)
     pids[i] = start_thread(child, (void*) (indices+i));
@@ -88,8 +87,3 @@ int main(int argc, char *argv[])
     }
 
 }
-
-
-
-
-
