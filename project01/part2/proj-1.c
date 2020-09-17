@@ -1,3 +1,24 @@
+// CSE 531 - Distributed and Multiprocessor Operating Systems
+// Project 1
+// Due September 23, 2020
+// Matt Berk
+// Hongquy Nguyen
+//
+// Features:
+//   Program runs without any parameters, but can take 1 argument for specifying the number of children running (default 3)
+//   Semaphore synchronization scheme based on the solution to the Readers-Writers semaphore problem.
+//   If the synchronization scheme fails, the program halts.
+//
+// Program description:
+//   Main (parent) thread sets up array and semaphores
+//   Parent creates 3 children
+//   One of the children runs and starts the other children (using the start_children semaphore)
+//   Once all of the children finish running (child_wait semaphore), the parent thread is started (start_parent semaphore)
+//   Once the parent thread finishes running, the children are started
+//   The process then repeats
+
+
+
 #define _GNU_SOURCE
 
 #include <stdio.h>
