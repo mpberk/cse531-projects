@@ -36,21 +36,39 @@ void AddQueue(q_element **head, q_element *item)
 {
   if (*head == NULL)
     {
-      printf("Queue is empty\n");
       item->prev = item;
       item->next = item;
     }
   else
     {
-      printf("Queue is not empty\n");
       item->next = (*head);
-      item->prev = (*head)->prev;      
-      (*head)->prev = item;
+      item->prev = (*head)->prev;
       (*head)->prev->next = item;
+      (*head)->prev = item;
     };
-  
+
   *head = item;
-  
+
 };
+
+q_element *DelQueue(q_element **head)
+{
+  q_element *deleted_item;
+  if (*head == NULL)
+    {
+      printf("ERROR: Attempted to delete item from empty queue\n");
+    }
+  else
+    {
+      deleted_item = *head;
+      (*head)->next->prev = (*head)->prev;
+      (*head)->prev->next = (*head)->next;
+      *head = (*head)->next;
+      deleted_item->next = NULL;
+      deleted_item->prev = NULL;
+    };
+  return deleted_item;
+};
+
 
 #endif
