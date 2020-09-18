@@ -5,6 +5,10 @@
 
 int main(int argc, char *argv[])
 {
+  int item1_value = 1;
+  int item2_value = 2;
+  int item3_value = 3;
+  
   printf("Creating queue\n");
   q_element *head = NewQueue();
 
@@ -18,7 +22,7 @@ int main(int argc, char *argv[])
   item1 = NewItem();
 
   printf("Updating payload of item1\n");
-  item1->payload = 1;
+  item1->payload = (void*) &item1_value;
 
   printf("Adding item1 to queue\n");
   AddQueue(&head, item1);
@@ -32,7 +36,7 @@ int main(int argc, char *argv[])
 
   printf("Creating item2\n");
   q_element *item2 = NewItem();
-  item2->payload = 2;
+  item2->payload = (void*) &item2_value;
 
   printf("Adding item2 to queue\n");
   AddQueue(&head, item2);
@@ -42,23 +46,23 @@ int main(int argc, char *argv[])
     printf("ERROR: Failed to add item2 to queue\n");
 
   if (head->next != item1)
-    printf("ERROR: Failed to setup head->next pointer. Exp: %d, Act: %d\n",item1->payload,head->next->payload);
+    printf("ERROR: Failed to setup head->next pointer. Exp: %d, Act: %d\n",*((int*)(item1->payload)),*((int*)(head->next->payload)));
 
   if (head->prev != item1)
-    printf("ERROR: Failed to setup head->prev pointer. Exp: %d, Act: %d\n",item1->payload,head->prev->payload);
+    printf("ERROR: Failed to setup head->prev pointer. Exp: %d, Act: %d\n",*((int*)(item1->payload)),*((int*)(head->prev->payload)));
 
   q_element *item3 = NewItem();
-  item3->payload = 3;
+  item3->payload = (void*) &item3_value;
 
   printf("Adding item3 to queue\n");
   AddQueue(&head, item3);
 
   // Resulting queue should be 3->2->1
   if (head->next != item2)
-    printf("ERROR: Failed to setup head->next pointer. Exp: %d, Act: %d\n",item2->payload,head->next->payload);
+    printf("ERROR: Failed to setup head->next pointer. Exp: %d, Act: %d\n",*((int*)(item2->payload)),*((int*)(head->next->payload)));
 
   if (head->prev != item1)
-    printf("ERROR: Failed to setup head->prev pointer. Exp: %d, Act: %d\n",item1->payload,head->prev->payload);
+    printf("ERROR: Failed to setup head->prev pointer. Exp: %d, Act: %d\n",*((int*)(item1->payload)),*((int*)(head->prev->payload)));
 
   printf("Removing item3 from queue\n");
   q_element *item3_removed = DelQueue(&head);
@@ -68,13 +72,13 @@ int main(int argc, char *argv[])
     printf("ERROR: Removed incorrect item");
 
   if (head != item2)
-    printf("ERROR: New head is incorrect. Exp: %d, Act: %d",item2->payload,head->payload);
+    printf("ERROR: New head is incorrect. Exp: %d, Act: %d",*((int*)(item2->payload)),*((int*)(head->payload)));
 
   if (head->next != item1)
-    printf("ERROR: Failed to setup head->next pointer. Exp: %d, Act: %d\n",item1->payload, head->next->payload);
+    printf("ERROR: Failed to setup head->next pointer. Exp: %d, Act: %d\n",*((int*)(item1->payload)),*((int*)(head->next->payload)));
 
   if (head->prev != item1)
-    printf("ERROR: Failed to setup head->prev pointer. Exp: %d, Act: %d\n",item1->payload, head->prev->payload);
+    printf("ERROR: Failed to setup head->prev pointer. Exp: %d, Act: %d\n",*((int*)(item1->payload)), *((int*)(head->prev->payload)));
 
   printf("Removing item2 from queue\n");
   q_element *item2_removed = DelQueue(&head);
@@ -84,6 +88,6 @@ int main(int argc, char *argv[])
     printf("ERROR: Removed incorrect item");
 
   if (head != item1)
-    printf("ERROR: New head is incorrect. Exp: %d, Act: %d",item1->payload,head->payload);
+    printf("ERROR: New head is incorrect. Exp: %d, Act: %d",*((int*)(item1->payload)),*((int*)(head->payload)));
   
 };

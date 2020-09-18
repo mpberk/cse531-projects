@@ -10,7 +10,7 @@ struct q_element
 {
   q_element *prev;
   q_element *next;
-  int payload;
+  void* payload;
 };
 
 q_element *NewItem()
