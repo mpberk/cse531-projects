@@ -32,12 +32,14 @@ q_element *NewQueue()
   return head;
 };
 
+// Add to end of queue
 void AddQueue(q_element **head, q_element *item)
 {
   if (*head == NULL)
     {
       item->prev = item;
       item->next = item;
+      *head = item;
     }
   else
     {
@@ -47,10 +49,9 @@ void AddQueue(q_element **head, q_element *item)
       (*head)->prev = item;
     };
 
-  *head = item;
-
 };
 
+// Remove from head of queue
 q_element *DelQueue(q_element **head)
 {
   q_element *deleted_item;
