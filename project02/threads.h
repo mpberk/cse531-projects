@@ -42,7 +42,6 @@ void run()
   getcontext(&parent); // magic sauce
   swapcontext(&parent, &(((TCB_t*)(Curr_Thread->payload))->context)); // start the first round
   
-  // TODO: Verify types of previous instruction!
 };
 
 void yield() // similar to run
