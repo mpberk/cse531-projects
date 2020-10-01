@@ -34,7 +34,7 @@ ucontext_t *get_context_ptr(q_element *item)
   //     &(((TCB_t*)(item->payload))->context)  : pointer to context
 };
 
-void start_thread(void (*function)(void))
+void start_thread(void *function, void *args)
 {
   // allocate a stack (via malloc) of a certain size (choose 8192)
   int stack_size = 8192;
@@ -46,7 +46,7 @@ void start_thread(void (*function)(void))
   thread->payload = (void*) tcb;
   
   // call init_TCB with appropriate arguments
-  init_TCB(tcb, function, stack, stack_size);
+  init_TCB(tcb, function, args, stack, stack_size);
   
   // Add a thread_id (use a counter)
   tcb->thread_id = id_count;
