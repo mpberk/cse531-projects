@@ -13,6 +13,27 @@ q_element *Curr_Thread;
 // Global thread id count
 int id_count = 0;
 
+// Get ID of thread
+int get_id (q_element *thread)
+{
+  return ((TCB_t*)(thread->payload))->thread_id;
+  //               thread                        : pointer to q_element
+  //               thread->payload               : void pointer to tcb
+  //      (TCB_t*)(thread->payload)              : TCB_t pointer to tcb
+  //     ((TCB_t*)(thread->payload))->thread_id  : id
+};
+
+// Get pointer to context from thread
+ucontext_t *get_context_ptr(q_element *item)
+{
+  return &(((TCB_t*)(item->payload))->context);
+  //                 item                       : pointer to q_element
+  //                 item->payload              : void pointer to tcb
+  //        (TCB_t*)(item->payload)             : TCB_t pointer to tcb
+  //       ((TCB_t*)(item->payload))->context   : context that exists in TCB
+  //     &(((TCB_t*)(item->payload))->context)  : pointer to context
+};
+
 void start_thread(void (*function)(void))
 {
   // allocate a stack (via malloc) of a certain size (choose 8192)
@@ -40,8 +61,7 @@ void run()
   Curr_Thread = DelQueue(&ReadyQ);
   ucontext_t parent; // get a place to store the main context, for faking
   getcontext(&parent); // magic sauce
-  swapcontext(&parent, &(((TCB_t*)(Curr_Thread->payload))->context)); // start the first round
-  
+  swapcontext(&parent, get_context_ptr(Curr_Thread)); // start the first round
 };
 
 void yield() // similar to run
@@ -51,12 +71,7 @@ void yield() // similar to run
   Prev_Thread = Curr_Thread;
   Curr_Thread = DelQueue(&ReadyQ);
   // swap the context, from Prev_Thread to the thread pointed to Curr_Thread
-};
-
-// Get ID of thread
-int get_id (q_element *thread)
-{
-  return ((TCB_t*)(thread->payload))->thread_id;
+  swapcontext(get_context_ptr(Prev_Thread), get_context_ptr(Curr_Thread));
 };
 
 #endif
