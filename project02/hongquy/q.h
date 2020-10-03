@@ -1,28 +1,27 @@
+#ifndef Q_H
+#define Q_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "TCB.h"
 
-typedef struct qElement{
-	struct qElement* next;
-	struct qElement* prev;
-	TCB_t* load;
-} qElement;
-
-qElement* NewItem(){
-	qElement* newPtr = (qElement*) malloc(sizeof(qElement));
+TCB_t* NewItem(){
+	TCB_t* newPtr = (TCB_t*) malloc(sizeof(TCB_t));
 	newPtr->next = NULL;
 	newPtr->prev = NULL;
-	newPtr->load = NULL;
+	
+	getcontext(&(newPtr->context));
+//	newPtr->thread_id = -1;
 	return newPtr;
 }
 
-qElement** newQueue(){
-	qElement** head = (qElement**) malloc(sizeof(qElement*));
+TCB_t** newQueue(){
+	TCB_t** head = (TCB_t**) malloc(sizeof(TCB_t*));
 	(*head) = NewItem();
 	return head;
 }
 
-void AddQueue(qElement** head, qElement* item){
+void AddQueue(TCB_t** head, TCB_t* item){
 	if(*head == NULL){
 		printf("error, queue not made\n");
 		exit(1);
@@ -35,19 +34,19 @@ void AddQueue(qElement** head, qElement* item){
 		printf("Item added! 1\n");
 	}
 	else if((*head)->next != NULL){
-		qElement* trans = (*head)->prev;
+		TCB_t* tail = (*head)->prev;
 
-		trans->next = item;
-		trans->next->next = (*head);
-		trans->next->prev = trans;
-		(*head)->prev = trans->next;
+		tail->next = item;
+		tail->next->next = (*head);
+		tail->next->prev = tail;
+		(*head)->prev = tail->next;
 		printf("Item added! 2\n");
 	}
 }
 
-qElement* DelQueue(qElement** head){
+TCB_t* DelQueue(TCB_t** head){
 
-	qElement* delEle = NULL;
+	TCB_t* delEle = NULL;
 	
 	if((*head) == NULL){
 		printf("error, queue empty\n");
@@ -56,23 +55,26 @@ qElement* DelQueue(qElement** head){
 	else if((*head)->next == NULL){
 		delEle = *head;
 		(*head) = NULL;
-		printf("Item deleted 1\n");
+	///	printf("Item deleted 1\n");
 	}
 	else if((*head)->next != NULL && (*head)->next != (*head)){
 		delEle = *head;
-		qElement* temp = (*head)->prev;
-		temp->next = (*head)->next;
-		(*head)->next->prev = temp;
+		TCB_t* tail = (*head)->prev;
+		
+		tail->next = (*head)->next;
+		(*head)->next->prev = tail;
+
 		(*head) = (*head)->next;
-		printf("Item deleted 2\n");
+	//	printf("Item deleted 2\n");
 	
 	}
 	else if((*head)->next !=NULL && (*head)->next == *head){
 		delEle = *head;
 		*head = NULL;
-		printf("Item deleted 3\n");
+	//	printf("Item deleted 3\n");
 	}
 
 	return delEle;
 	
 }
+#endif
