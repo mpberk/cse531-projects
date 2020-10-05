@@ -11,7 +11,7 @@ int globVar = 0;
 
 void function1(){
 	int local = 0;
-	
+
 	while (1) {
 		printf("In function 1\n");
 		sleep(1);
@@ -25,7 +25,7 @@ void function1(){
 
 void function2(){
 	int local = 0;
-	
+
 	while(1) {
 		printf("In function 2\n");
 		sleep(1);
@@ -41,9 +41,9 @@ void function2(){
 void function3(){
 
 	int local = 0;
-	
+
 	while(1) {
-	
+
 		printf("In function 3\n");
 		sleep(1);
 		globVar++; local++;
@@ -58,19 +58,18 @@ TCB_t** ReadyQ;
 TCB_t* Curr_Thread;
 
 int main(){
-		
-	ReadyQ = newQueue();	
-	Curr_Thread = NewItem();
 
-//	printf("this part works 1\n");	
-	
+  ReadyQ = newQueue();
+
+//	printf("this part works 1\n");
+
 	start_thread(function1);
 	start_thread(function2);
 	start_thread(function3);
-	
-//	printf("this part works 2\n");	
-	run();	
-	return 1;	
+
+//	printf("this part works 2\n");
+	run();
+	return 1;
 }
 
 #endif
