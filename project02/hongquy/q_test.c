@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
 
   printf("Creating item1\n");
   TCB_t *item1 = NewItem();
+  item1->thread_id = 1;
 
   printf("Adding item1 to queue\n");
   AddQueue(ReadyQ, item1);
@@ -35,6 +36,7 @@ int main(int argc, char *argv[])
   
   printf("Creating item2\n");
   TCB_t *item2 = NewItem();
+  item1->thread_id = 2;
 
   printf("Adding item2 to queue\n");
   AddQueue(ReadyQ, item2);
@@ -54,6 +56,7 @@ int main(int argc, char *argv[])
 
   printf("Creating item3\n");
   TCB_t *item3 = NewItem();
+  item1->thread_id = 3;
 
   printf("Adding item3 to queue\n");
   AddQueue(ReadyQ, item3);
