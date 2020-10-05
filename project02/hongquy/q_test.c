@@ -3,10 +3,10 @@
 
 #include "q.h"
 
-//int id (q_element *item)
-//{
-//  return *((int*)(item->payload));
-//}
+int id (TCB_t *item)
+{
+  return item->thread_id;
+}
 
 TCB_t** ReadyQ;
 TCB_t* Curr_Thread;
@@ -98,12 +98,18 @@ int main(int argc, char *argv[])
   // ReadyQ at this point should be {head,item2,item3,item1}
 
   // The head item should have next to item2 and prev to item1
-  if (((*ReadyQ)->next != item2) || ((*ReadyQ)->prev != item1))
+  if (((*ReadyQ)->next != item2) || ((*ReadyQ)->prev != item1)) {
     printf("ERROR: Failed to setup pointers for head\n");
+    printf("ERROR: Next - Exp: %d, Act: %d\n",id(item2),id(((*ReadyQ)->next)));
+    printf("ERROR: Prev - Exp: %d, Act: %d\n",id(item1),id(((*ReadyQ)->prev)));
+  };
   
   // The item1 should have next to head and prev to item3
-  if ((item1->next != (*ReadyQ)) || (item1->prev != item3))
+  if ((item1->next != (*ReadyQ)) || (item1->prev != item3)) {
     printf("ERROR: Failed to setup pointers for item1\n");
+    printf("ERROR: Next - Exp: %d, Act: %d\n",id((*ReadyQ)),id((item1->next)));
+    printf("ERROR: Prev - Exp: %d, Act: %d\n",id(item3),id((item1->prev)));
+  };
       
   // The item2 should have next to item3 and prev to head
   if ((item2->next != item3) || (item2->prev != (*ReadyQ)))
