@@ -1,6 +1,6 @@
 // Matthew Berk
 // Hongquy Nguyen
-// CSE 521 - Distributed and Multiprocessor Operating Systems
+// CSE 531 - Distributed and Multiprocessor Operating Systems
 // Project 02
 // Due October 7, 2020
 
