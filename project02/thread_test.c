@@ -1,3 +1,9 @@
+// Matthew Berk
+// Hongquy Nguyen
+// CSE 521 - Distributed and Multiprocessor Operating Systems
+// Project 02
+// Due October 7, 2020
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
