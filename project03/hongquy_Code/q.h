@@ -43,32 +43,18 @@ TCB_t* DelQueue(TCB_t** head){
 
 	TCB_t* delEle = NULL;
 	
-	if((*head) == NULL){
+	if(*head == NULL){
 		printf("error, queue empty\n");
 		exit(1);
 	}
-	else if((*head)->next == NULL){
+	else{
 		delEle = *head;
-		(*head) = NULL;
-	///	printf("Item deleted 1\n");
+		(*head)->next->prev = (*head)->prev;
+		(*head)->prev->next = (*head)->next;
+		*head = (*head)->next;
+		delEle->next = NULL;
+		delEle->prev = NULL;
 	}
-	else if((*head)->next != NULL && (*head)->next != (*head)){
-		delEle = *head;
-		TCB_t* tail = (*head)->prev;
-		
-		tail->next = (*head)->next;
-		(*head)->next->prev = tail;
-
-		(*head) = (*head)->next;
-	//	printf("Item deleted 2\n");
-	
-	}
-	else if((*head)->next !=NULL && (*head)->next == *head){
-		delEle = *head;
-		*head = NULL;
-	//	printf("Item deleted 3\n");
-	}
-
 	return delEle;
 	
 }

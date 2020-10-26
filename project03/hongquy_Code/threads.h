@@ -17,11 +17,11 @@ void start_thread(void (*function)(void)){
 	
 	init_TCB(temp_tcb, function, stack, 8192);
 	
+	printf("thread ID: %d\n", counterID); 	
+	
 	temp_tcb->thread_id = counterID;
      	counterID++;
 
-	printf("thread ID: %d\n", counterID); 	
-	
 	AddQueue(ReadyQ, temp_tcb);	
 //	printf("Added TCB to ReadyQ\n");
 }

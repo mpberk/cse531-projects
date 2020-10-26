@@ -22,6 +22,7 @@ void reader_entry(int ID){
 			P(r_sem);
 			rwc--;	     
 		}
+
 		printf("Reader count increased\n");
 		rc++;
 		if (rwc > 0) {
@@ -104,8 +105,10 @@ void writer_exit(int ID){
 }
 
 void reader(){
+
 	printf("In reader function\n");
 	printf("Thread running rn is: %d\n", (*ReadyQ)->thread_id);
+	printf("Next thread is: %d\n", (*ReadyQ)->next->thread_id);
 	int ID;
 	if(mutex == 1){
 		printf("In mutex\n");
@@ -120,6 +123,7 @@ void reader(){
 		printf("Reader #%d is running\n" , ID);
 		sleep(1);
 		reader_exit(ID);
+		yield();
 	}
 }
 
@@ -139,6 +143,7 @@ void writer(){
 		printf("Writer #%d is running\n", ID);
 		sleep(1);
 		writer_exit(ID);
+		yield();
 	}
 
 }
@@ -146,8 +151,10 @@ void writer(){
 TCB_t** ReadyQ;
 TCB_t* Curr_Thread;
 int counterID;
-void main(){
 
+void main(){
+	printf("This is up to date\n");
+	
 	w_sem = CreateSem(0);
 	r_sem = CreateSem(0);
 	mutex = 1;
@@ -160,19 +167,19 @@ void main(){
 
 	start_thread(reader);
 	start_thread(reader);
+	start_thread(reader);
+	start_thread(reader);
 	
+
+	start_thread(writer);
+	start_thread(writer);
+
+	printf("ReadyQ: %d\n", (*ReadyQ)->thread_id);
 	printf("ReadyQ->next: %d \n", (*ReadyQ)->next->thread_id);
-
-	start_thread(reader);
-	start_thread(reader);
-	
 	printf("ReadyQ->next->next: %d \n", (*ReadyQ)->next->next->thread_id);
-
-	start_thread(writer);
-	start_thread(writer);
-
+	printf("ReadyQ->-next->next->next: %d\n", (*ReadyQ)->next->next->next->thread_id);
+	
 	printf("this part works 2\n");
-
 	run();
 	
 }
