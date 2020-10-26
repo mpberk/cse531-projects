@@ -7,7 +7,7 @@
 extern TCB_t** ReadyQ;
 
 extern TCB_t* Curr_Thread;
-int counter = 0;
+extern int counterID;
 
 void start_thread(void (*function)(void)){
 	
@@ -17,10 +17,13 @@ void start_thread(void (*function)(void)){
 	
 	init_TCB(temp_tcb, function, stack, 8192);
 	
-	temp_tcb->thread_id = counter;
-       // counter++;
+	temp_tcb->thread_id = counterID;
+     	counterID++;
+
+	printf("thread ID: %d\n", counterID); 	
 	
 	AddQueue(ReadyQ, temp_tcb);	
+//	printf("Added TCB to ReadyQ\n");
 }
 
 void run(){

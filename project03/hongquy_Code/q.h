@@ -27,23 +27,15 @@ void AddQueue(TCB_t** head, TCB_t* item){
 		exit(1);
 	}
 	else if(*head == NULL ){
+		item->prev = item;
+		item->next = item;
 		*head = item;
 	}	
-	else if((*head)->next == NULL){
-		(*head)->next = item;
-		(*head)->prev = item;
-		item->prev = (*head);
+	else{
 		item->next = (*head);
-//		printf("Item added! 1\n");
-	}
-	else if((*head)->next != NULL){
-		TCB_t* tail = (*head)->prev;
-
-		tail->next = item;
-		tail->next->next = (*head);
-		tail->next->prev = tail;
-		(*head)->prev = tail->next;
-//		printf("Item added! 2\n");
+		item->prev = (*head)->prev;
+		(*head)->prev->next = item;
+		(*head)->prev = item;
 	}
 }
 

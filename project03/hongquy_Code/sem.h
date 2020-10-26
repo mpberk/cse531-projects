@@ -19,8 +19,9 @@ void P(Semaphore_t* sem){
 	if(sem->counter < 0){
 		TCB_t* storeThread = DelQueue(ReadyQ);
 		AddQueue(sem->Queue, storeThread);
+		swapcontext(&(storeThread->context), &((*ReadyQ)->context));
+	//	swapcontext(&((*ReadyQ)->context), &(storeThread->context));
 	}
-
 
 }
 
