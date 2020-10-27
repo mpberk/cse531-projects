@@ -8,4 +8,4 @@ clean :
 	rm -rf *.o a.out
 
 package :
-	tar -cvzf proj-2.tar.gz TCB.h q.h threads.h thread_test.c
+	tar -cvzf proj-3.tar.gz TCB.h q.h threads.h sem.h read_write.c
