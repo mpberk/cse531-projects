@@ -37,18 +37,24 @@ void AddQueue(q_element **head, q_element *item)
 {
   if (*head == NULL)
     {
+      printf("Hit AQ A\n");
       item->prev = item;
       item->next = item;
       *head = item;
     }
   else
     {
+      printf("Hit AQ B\n");
       item->next = (*head);
+      printf("Hit AQ C\n");
       item->prev = (*head)->prev;
+      printf("Hit AQ D\n");
       (*head)->prev->next = item;
+      printf("Hit AQ E\n");
       (*head)->prev = item;
+      printf("Hit AQ F\n");
     };
-
+  printf("Hit AQ G\n");
 };
 
 // Remove from head of queue
