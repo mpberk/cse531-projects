@@ -22,7 +22,7 @@ TCB_t** newQueue(){
 }
 
 void AddQueue(TCB_t** head, TCB_t* item){
-	if(head == NULL){
+if(head == NULL){
 		printf("error, queue not made\n");
 		exit(1);
 	}
