@@ -1,81 +1,83 @@
 #ifndef Q_H
 #define Q_H
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "TCB.h"
 
-typedef struct q_element q_element;
+TCB_t* NewItem(){
+	TCB_t* newPtr = (TCB_t*) malloc(sizeof(TCB_t));
+	newPtr->next = NULL;
+	newPtr->prev = NULL;
+//	newPtr->thread_id = NULL;
 
-struct q_element
-{
-  q_element *prev;
-  q_element *next;
-  void* payload;
-};
+	getcontext(&(newPtr->context));
+	
+	return newPtr;
+}
 
-q_element *NewItem()
-{
-  q_element *new_item = (q_element*) malloc(sizeof(q_element));
-  new_item->prev = NULL;
-  new_item->next = NULL;
-  return new_item;
-};
+TCB_t** newQueue(){
+	TCB_t** head = (TCB_t**) malloc(sizeof(TCB_t*));
+	return head;
+}
 
-void FreeItem(q_element *item)
-{
-  free(item);
-};
+void AddQueue(TCB_t** head, TCB_t* item){
+	if(head == NULL){
+		printf("error, queue not made\n");
+		exit(1);
+	}
+	else if(*head == NULL ){
+		*head = item;
+	}	
+	else if((*head)->next == NULL){
+		(*head)->next = item;
+		(*head)->prev = item;
+		item->prev = (*head);
+		item->next = (*head);
+//		printf("Item added! 1\n");
+	}
+	else if((*head)->next != NULL){
+		TCB_t* tail = (*head)->prev;
 
-q_element *NewQueue()
-{
-  q_element* head = NULL;
-  return head;
-};
+		tail->next = item;
+		tail->next->next = (*head);
+		tail->next->prev = tail;
+		(*head)->prev = tail->next;
+//		printf("Item added! 2\n");
+	}
+}
 
-// Add to end of queue
-void AddQueue(q_element **head, q_element *item)
-{
-  if (*head == NULL)
-    {
-      printf("Hit AQ A\n");
-      item->prev = item;
-      item->next = item;
-      *head = item;
-    }
-  else
-    {
-      printf("Hit AQ B\n");
-      item->next = (*head);
-      printf("Hit AQ C\n");
-      item->prev = (*head)->prev;
-      printf("Hit AQ D\n");
-      (*head)->prev->next = item;
-      printf("Hit AQ E\n");
-      (*head)->prev = item;
-      printf("Hit AQ F\n");
-    };
-  printf("Hit AQ G\n");
-};
+TCB_t* DelQueue(TCB_t** head){
 
-// Remove from head of queue
-q_element *DelQueue(q_element **head)
-{
-  q_element *deleted_item;
-  if (*head == NULL)
-    {
-      printf("ERROR: Attempted to delete item from empty queue\n");
-    }
-  else
-    {
-      deleted_item = *head;
-      (*head)->next->prev = (*head)->prev;
-      (*head)->prev->next = (*head)->next;
-      *head = (*head)->next;
-      deleted_item->next = NULL;
-      deleted_item->prev = NULL;
-    };
-  return deleted_item;
-};
+	TCB_t* delEle = NULL;
+	
+	if((*head) == NULL){
+		printf("error, queue empty\n");
+		exit(1);
+	}
+	else if((*head)->next == NULL){
+		delEle = *head;
+		(*head) = NULL;
+	///	printf("Item deleted 1\n");
+	}
+	else if((*head)->next != NULL && (*head)->next != (*head)){
+		delEle = *head;
+		TCB_t* tail = (*head)->prev;
+		
+		tail->next = (*head)->next;
+		(*head)->next->prev = tail;
 
+		(*head) = (*head)->next;
+	//	printf("Item deleted 2\n");
+	
+	}
+	else if((*head)->next !=NULL && (*head)->next == *head){
+		delEle = *head;
+		*head = NULL;
+	//	printf("Item deleted 3\n");
+	}
 
+	return delEle;
+	
+}
 #endif
