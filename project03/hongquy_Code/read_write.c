@@ -1,3 +1,9 @@
+// CSE 531 - Distributed and Multiprocessor Operating Systems
+// Project 3
+// Due October 26, 2020
+// Matt Berk
+// Hongquy Nguyen
+
 #include "sem.h"
 
 Semaphore_t* r_sem;
@@ -16,7 +22,6 @@ void reader_entry(int ID){
 		rwc--;	     
 	}
 
-	printf("Reader count increased\n");
 	rc++;
 
 	if (rwc > 0) {
@@ -48,7 +53,6 @@ void writer_entry(int ID){
 		P(w_sem);
 		wwc--;
 	}
-	printf("Increasing writer count\n");
 
 	wc++;
 	sleep(1);
@@ -70,8 +74,6 @@ void writer_exit(int ID){
 }
 
 void reader(){
-
-	printf("In reader function\n");
 	
 	int ID;
 	
@@ -79,10 +81,6 @@ void reader(){
 	global_ID++;
 	
 	while(1){
-		printf("In reader loop\n");
-		
-		printf("Thread running rn is: %d\n", (*ReadyQ)->thread_id);
-		printf("Next thread is: %d\n", (*ReadyQ)->next->thread_id);
 
 		P(r_sem);
 
@@ -99,18 +97,12 @@ void reader(){
 
 void writer(){
 	
-	printf("In writer function\n");
-	
 	int ID;
 	
 	ID = global_ID;
 	global_ID++;
 	
 	while (1){
-		printf("In writer loop\n");
-		
-		printf("Thread running rn is: %d\n", (*ReadyQ)->thread_id);
-		printf("Next thread is: %d\n", (*ReadyQ)->next->thread_id);
 
 		P(w_sem);
 
@@ -148,11 +140,6 @@ void main(){
 
 	start_thread(writer);
 	start_thread(writer);
-
-//	printf("ReadyQ: %d\n", (*ReadyQ)->thread_id);
-//	printf("ReadyQ->next: %d \n", (*ReadyQ)->next->thread_id);
-//	printf("ReadyQ->next->next: %d \n", (*ReadyQ)->next->next->thread_id);
-//	printf("ReadyQ->-next->next->next: %d\n", (*ReadyQ)->next->next->next->thread_id);
 	
 	printf("this part works 2\n");
 	run();
