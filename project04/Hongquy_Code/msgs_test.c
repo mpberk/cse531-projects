@@ -1,3 +1,9 @@
+// CSE 531 - Distributed and Multiprocessor Operating Systems
+// Project 4
+// Due November 11, 2020
+// Matt Berk
+// Hongquy Nguyen
+
 #include "msgs.h"
 
 //global ports
